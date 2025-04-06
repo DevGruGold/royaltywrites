@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Search, Menu, X, User, PenSquare, Trending } from "lucide-react";
+import { Search, Menu, X, User, PenSquare, TrendingUp } from "lucide-react";
 import { 
   Sheet, 
   SheetContent, 
@@ -32,7 +32,7 @@ const NavBar = () => {
                 <nav className="flex flex-col gap-4">
                   <SheetClose asChild>
                     <Link to="/" className="flex items-center gap-2 text-lg font-medium">
-                      <Trending className="h-5 w-5" />
+                      <TrendingUp className="h-5 w-5" />
                       Trending
                     </Link>
                   </SheetClose>

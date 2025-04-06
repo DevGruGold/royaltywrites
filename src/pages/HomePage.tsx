@@ -7,6 +7,7 @@ import SketchCard from "@/components/SketchCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import AIAssistant from "@/components/AIAssistant";
 import Footer from "@/components/Footer";
+import { Badge } from "@/components/ui/badge";
 
 // Mock data for sketches
 const mockSketches = [
