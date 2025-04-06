@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Search, Menu, X, User, PenSquare, TrendingUp } from "lucide-react";
+import { Search, Menu, X, User, PenSquare, TrendingUp, Shield, FileText } from "lucide-react";
 import { 
   Sheet, 
   SheetContent, 
@@ -42,6 +42,12 @@ const NavBar = () => {
                       Submit Idea
                     </Link>
                   </SheetClose>
+                  <SheetClose asChild>
+                    <Link to="/copyright-standards" className="flex items-center gap-2 text-lg font-medium">
+                      <FileText className="h-5 w-5" />
+                      Pro Writing Standards
+                    </Link>
+                  </SheetClose>
                   {isLoggedIn ? (
                     <SheetClose asChild>
                       <Link to="/dashboard" className="flex items-center gap-2 text-lg font-medium">
@@ -76,6 +82,10 @@ const NavBar = () => {
           <Link to="/" className="text-sm font-medium hover:text-primary">Trending</Link>
           <Link to="/categories" className="text-sm font-medium hover:text-primary">Categories</Link>
           <Link to="/submit" className="text-sm font-medium hover:text-primary">Submit Idea</Link>
+          <Link to="/copyright-standards" className="text-sm font-medium hover:text-primary flex items-center">
+            <Shield className="h-4 w-4 mr-1" />
+            Pro Standards
+          </Link>
         </div>
 
         <div className="flex items-center gap-4">
