@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NavBar from "@/components/NavBar";
-import Header from "@/components/Header";
 import SketchCard from "@/components/SketchCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import AIAssistant from "@/components/AIAssistant";
@@ -128,10 +127,20 @@ const HomePage = () => {
       <NavBar />
       
       <main className="flex-1">
-        <Header 
-          title="RoyaltyWrites"
-          description="The ultimate comedy sketch incubator. Submit your ideas, get feedback, and track your royalties if your sketches get picked up."
-        />
+        <div className="relative py-10 md:py-16 mb-8 overflow-hidden">
+          <div className="absolute inset-0 comedy-gradient opacity-10 -z-10"></div>
+          <div className="absolute -top-24 -right-24 w-64 h-64 bg-comedy-300 rounded-full blur-3xl opacity-20 -z-10"></div>
+          <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-comedy-500 rounded-full blur-3xl opacity-10 -z-10"></div>
+          
+          <div className="container mx-auto text-center">
+            <h1 className="text-4xl md:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-comedy-700 to-comedy-500">
+              RoyaltyWrites
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              The ultimate comedy sketch incubator. Submit your ideas, get feedback, and track your royalties if your sketches get picked up.
+            </p>
+          </div>
+        </div>
         
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-6 mb-8">
