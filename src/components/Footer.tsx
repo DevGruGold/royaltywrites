@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
-            <Link to="/" className="text-2xl font-bold text-primary">SNL Ideas</Link>
+            <Link to="/" className="text-2xl font-bold text-primary">RoyaltyWrites</Link>
             <p className="mt-4 text-muted-foreground">
               The ultimate comedy sketch incubator for writers and comedy fans.
             </p>
@@ -48,7 +48,7 @@ const Footer = () => {
         <div className="border-t mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} SNL Ideas. All rights reserved.
+              © {new Date().getFullYear()} RoyaltyWrites. All rights reserved.
             </p>
             
             <div className="flex gap-4 mt-4 md:mt-0">

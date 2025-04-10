@@ -18,18 +18,18 @@ const Terms = () => {
         <div className="container mx-auto px-4 mb-16">
           <div className="bg-card rounded-lg border p-6 shadow-sm">
             <div className="prose prose-sm md:prose-base max-w-none">
-              <h2 className="text-2xl font-bold">SNL Ideas Terms of Use Agreement</h2>
+              <h2 className="text-2xl font-bold">RoyaltyWrites Terms of Use Agreement</h2>
               <p>Last updated: April 10, 2025</p>
               
               <h3 className="text-xl font-bold mt-6">1. Acceptance of Terms</h3>
               <p>
-                By accessing and using the SNL Ideas platform ("Service"), you agree to be bound by these Terms of Use 
+                By accessing and using the RoyaltyWrites platform ("Service"), you agree to be bound by these Terms of Use 
                 ("Terms"). If you do not agree to these Terms, you may not use the Service.
               </p>
               
               <h3 className="text-xl font-bold mt-6">2. Description of Service</h3>
               <p>
-                SNL Ideas is a platform for comedy writers to share sketch ideas, receive feedback, 
+                RoyaltyWrites is a platform for comedy writers to share sketch ideas, receive feedback, 
                 and potentially have their work recognized and monetized. The Service includes all content, 
                 features, and functionality offered through our website and related applications.
               </p>
@@ -77,7 +77,7 @@ const Terms = () => {
               
               <h3 className="text-xl font-bold mt-6">6. Intellectual Property</h3>
               <p>
-                The Service and its original content, features, and functionality are owned by SNL Ideas 
+                The Service and its original content, features, and functionality are owned by RoyaltyWrites 
                 and are protected by international copyright, trademark, patent, trade secret, and other 
                 intellectual property laws. Our intellectual property may not be used in connection with 
                 any product or service without our prior written consent.
@@ -96,7 +96,7 @@ const Terms = () => {
               
               <h3 className="text-xl font-bold mt-6">8. Limitation of Liability</h3>
               <p>
-                In no event shall SNL Ideas, nor its directors, employees, partners, agents, suppliers, 
+                In no event shall RoyaltyWrites, nor its directors, employees, partners, agents, suppliers, 
                 or affiliates, be liable for any indirect, incidental, special, consequential, or punitive 
                 damages, including without limitation, loss of profits, data, use, goodwill, or other 
                 intangible losses, resulting from:
@@ -125,7 +125,7 @@ const Terms = () => {
               
               <h3 className="text-xl font-bold mt-6">11. Contact Us</h3>
               <p>
-                If you have any questions about these Terms, please contact us at legal@snlideas.com.
+                If you have any questions about these Terms, please contact us at legal@royaltywrites.com.
               </p>
             </div>
           </div>

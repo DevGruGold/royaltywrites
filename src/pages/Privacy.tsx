@@ -23,7 +23,7 @@ const Privacy = () => {
               
               <h3 className="text-xl font-bold mt-6">1. Introduction</h3>
               <p>
-                SNL Ideas ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy 
+                RoyaltyWrites ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy 
                 explains how we collect, use, disclose, and safeguard your information when you use our 
                 website and services (collectively, the "Service").
               </p>
@@ -125,7 +125,7 @@ const Privacy = () => {
               
               <h3 className="text-xl font-bold mt-6">9. Contact Us</h3>
               <p>
-                If you have questions about this Privacy Policy, please contact us at privacy@snlideas.com.
+                If you have questions about this Privacy Policy, please contact us at privacy@royaltywrites.com.
               </p>
             </div>
           </div>

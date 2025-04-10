@@ -27,7 +27,7 @@ const NavBar = () => {
             <SheetContent side="left" className="w-[280px] sm:w-[350px]">
               <div className="flex flex-col gap-6 py-6">
                 <SheetClose asChild>
-                  <Link to="/" className="text-2xl font-bold text-primary">SNL Ideas</Link>
+                  <Link to="/" className="text-2xl font-bold text-primary">RoyaltyWrites</Link>
                 </SheetClose>
                 <nav className="flex flex-col gap-4">
                   <SheetClose asChild>
@@ -74,8 +74,8 @@ const NavBar = () => {
             </SheetContent>
           </Sheet>
           
-          <Link to="/" className="text-2xl font-bold text-primary hidden md:block">SNL Ideas</Link>
-          <Link to="/" className="text-2xl font-bold text-primary md:hidden">SNL</Link>
+          <Link to="/" className="text-2xl font-bold text-primary hidden md:block">RoyaltyWrites</Link>
+          <Link to="/" className="text-2xl font-bold text-primary md:hidden">RW</Link>
         </div>
 
         <div className="hidden md:flex items-center space-x-4">

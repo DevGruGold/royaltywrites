@@ -22,7 +22,7 @@ const faqCategories = [
       },
       {
         question: "Is it free to submit sketch ideas?",
-        answer: "Yes! Submitting sketch ideas to SNL Ideas is completely free. You only need to create an account and follow our formatting guidelines."
+        answer: "Yes! Submitting sketch ideas to RoyaltyWrites is completely free. You only need to create an account and follow our formatting guidelines."
       },
       {
         question: "Do I need to be a professional writer to submit ideas?",
@@ -120,7 +120,7 @@ const FAQ = () => {
       <main className="flex-1">
         <Header 
           title="Frequently Asked Questions"
-          description="Find answers to common questions about submitting sketches, royalties, and using SNL Ideas."
+          description="Find answers to common questions about submitting sketches, royalties, and using RoyaltyWrites."
           showCTA={false}
         />
         
@@ -167,7 +167,7 @@ const FAQ = () => {
             <h3 className="text-xl font-bold mb-2">Still have questions?</h3>
             <p className="mb-4">If you couldn't find the answer you're looking for, our support team is here to help.</p>
             <p className="flex items-center gap-2">
-              Contact us at <span className="font-medium">support@snlideas.com</span>
+              Contact us at <span className="font-medium">support@royaltywrites.com</span>
             </p>
           </div>
         </div>

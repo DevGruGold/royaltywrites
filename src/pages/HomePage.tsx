@@ -129,7 +129,7 @@ const HomePage = () => {
       
       <main className="flex-1">
         <Header 
-          title="SNL Ideas"
+          title="RoyaltyWrites"
           description="The ultimate comedy sketch incubator. Submit your ideas, get feedback, and track your royalties if your sketches get picked up."
         />
         
