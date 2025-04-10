@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Search, Menu, X, User, PenSquare, TrendingUp, Shield, FileText } from "lucide-react";
+import { Search, Menu, X, PenSquare, TrendingUp, Shield, FileText } from "lucide-react";
 import { 
   Sheet, 
   SheetContent, 
@@ -12,8 +12,6 @@ import {
 import { Input } from "./ui/input";
 
 const NavBar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -48,27 +46,6 @@ const NavBar = () => {
                       Pro Writing Standards
                     </Link>
                   </SheetClose>
-                  {isLoggedIn ? (
-                    <SheetClose asChild>
-                      <Link to="/dashboard" className="flex items-center gap-2 text-lg font-medium">
-                        <User className="h-5 w-5" />
-                        Dashboard
-                      </Link>
-                    </SheetClose>
-                  ) : (
-                    <div className="flex flex-col gap-2">
-                      <SheetClose asChild>
-                        <Link to="/login">
-                          <Button className="w-full">Login</Button>
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Link to="/register">
-                          <Button variant="outline" className="w-full">Register</Button>
-                        </Link>
-                      </SheetClose>
-                    </div>
-                  )}
                 </nav>
               </div>
             </SheetContent>
@@ -97,23 +74,9 @@ const NavBar = () => {
               className="w-full pl-8 rounded-full bg-background"
             />
           </form>
-
-          {isLoggedIn ? (
-            <Button variant="ghost" size="icon" className="rounded-full" asChild>
-              <Link to="/dashboard">
-                <User className="h-5 w-5" />
-              </Link>
-            </Button>
-          ) : (
-            <div className="flex gap-2">
-              <Link to="/login">
-                <Button variant="ghost" className="hidden md:flex">Login</Button>
-              </Link>
-              <Link to="/register">
-                <Button className="btn-bounce">Sign Up</Button>
-              </Link>
-            </div>
-          )}
+          <Link to="/submit">
+            <Button className="btn-bounce">Submit Sketch</Button>
+          </Link>
         </div>
       </div>
     </header>

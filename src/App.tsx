@@ -25,6 +25,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/trending" element={<HomePage />} />
+          <Route path="/classics" element={<HomePage />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/submit" element={<SubmitIdea />} />
           <Route path="/copyright-standards" element={<CopyrightStandards />} />
