@@ -49,17 +49,16 @@ const AIJokeWriter = () => {
 
       const data = await response.json();
       
-      if (data.error) {
-        console.error("API error:", data.error);
-        toast.error("Error generating joke: " + data.error.message);
-        return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+      // Check if the response contains a valid joke
+      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+        const joke = data.candidates[0].content.parts[0].text.trim();
+        return joke;
       }
       
-      const joke = data.candidates[0].content.parts[0].text.trim();
-      return joke;
+      // Fallback to random joke if API response is unexpected
+      return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
     } catch (error) {
-      console.error("Error generating joke:", error);
-      toast.error("Failed to generate joke. Using fallback jokes.");
+      // Silent fallback to random joke
       return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
     } finally {
       setIsLoading(false);
