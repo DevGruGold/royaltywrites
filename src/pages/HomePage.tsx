@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import NavBar from "@/components/NavBar";
@@ -129,26 +128,23 @@ const HomePage = () => {
       <AIJokeWriter />
       
       <main className="flex-1">
-        <div className="relative py-10 md:py-16 mb-8 overflow-hidden">
+        <div className="relative py-6 md:py-10 mb-4 overflow-hidden">
           <div className="absolute inset-0 comedy-gradient opacity-10 -z-10"></div>
-          <div className="absolute -top-24 -right-24 w-64 h-64 bg-comedy-300 rounded-full blur-3xl opacity-20 -z-10"></div>
-          <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-comedy-500 rounded-full blur-3xl opacity-10 -z-10"></div>
-          
-          <div className="container mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-comedy-700 to-comedy-500">
+          <div className="container mx-auto text-center px-4">
+            <h1 className="text-3xl md:text-5xl font-extrabold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-comedy-700 to-comedy-500">
               RoyaltyWrites
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              The ultimate comedy sketch incubator. Submit your ideas, get feedback, and track your royalties if your sketches get picked up.
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Submit your ideas, get feedback, and track royalties if your sketches get picked up.
             </p>
           </div>
         </div>
         
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-6 mb-8">
+        <div className="container mx-auto px-4 mb-8">
+          <div className="flex flex-col md:flex-row gap-6">
             <div className="w-full md:w-3/4">
               <Tabs defaultValue="trending" className="w-full" onValueChange={handleTabChange}>
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-center mb-4">
                   <TabsList>
                     <TabsTrigger value="trending">Trending</TabsTrigger>
                     <TabsTrigger value="newest">Newest</TabsTrigger>
@@ -158,19 +154,19 @@ const HomePage = () => {
                   <CategoryFilter onChange={handleCategoryChange} />
                 </div>
                 
-                <TabsContent value="trending" className="space-y-6">
+                <TabsContent value="trending" className="space-y-4">
                   {filteredSketches.map(sketch => (
                     <SketchCard key={sketch.id} {...sketch} />
                   ))}
                 </TabsContent>
                 
-                <TabsContent value="newest" className="space-y-6">
+                <TabsContent value="newest" className="space-y-4">
                   {filteredSketches.map(sketch => (
                     <SketchCard key={sketch.id} {...sketch} />
                   ))}
                 </TabsContent>
                 
-                <TabsContent value="classics" className="space-y-6">
+                <TabsContent value="classics" className="space-y-4">
                   {filteredSketches.map(sketch => (
                     <SketchCard key={sketch.id} {...sketch} />
                   ))}
@@ -180,18 +176,18 @@ const HomePage = () => {
             
             <div className="w-full md:w-1/4">
               <div className="bg-card rounded-lg border p-4 shadow-sm">
-                <h3 className="text-lg font-bold mb-4">Leaderboard</h3>
-                <div className="space-y-4">
+                <h3 className="text-lg font-bold mb-3">Leaderboard</h3>
+                <div className="space-y-3">
                   {mockSketches
                     .sort((a, b) => b.upvotes - a.upvotes)
                     .slice(0, 5)
                     .map((sketch, index) => (
-                      <div key={sketch.id} className="flex items-center gap-3">
+                      <div key={sketch.id} className="flex items-center gap-2">
                         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-muted font-bold text-sm">
                           {index + 1}
                         </div>
                         <div className="flex-1 truncate">
-                          <p className="font-medium truncate">{sketch.title}</p>
+                          <p className="font-medium truncate text-sm">{sketch.title}</p>
                           <p className="text-xs text-muted-foreground">
                             {sketch.upvotes} upvotes
                           </p>
@@ -201,8 +197,8 @@ const HomePage = () => {
                 </div>
               </div>
               
-              <div className="bg-card rounded-lg border p-4 shadow-sm mt-6">
-                <h3 className="text-lg font-bold mb-4">Popular Tags</h3>
+              <div className="bg-card rounded-lg border p-4 shadow-sm mt-4">
+                <h3 className="text-lg font-bold mb-3">Popular Tags</h3>
                 <div className="flex flex-wrap gap-2">
                   {["political", "parody", "absurdist", "musical", "character", "topical", "satire"].map(tag => (
                     <Badge key={tag} variant="outline" className="capitalize">

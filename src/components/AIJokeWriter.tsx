@@ -19,6 +19,7 @@ const AIJokeWriter = () => {
   const [currentJoke, setCurrentJoke] = useState<string>("");
   const [isNew, setIsNew] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isAIJoke, setIsAIJoke] = useState<boolean>(false);
 
   // Function to generate a joke using the Gemini API
   const generateJoke = async () => {
@@ -47,18 +48,27 @@ const AIJokeWriter = () => {
         })
       });
 
+      if (!response.ok) {
+        console.log("API error status:", response.status);
+        return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+      }
+
       const data = await response.json();
       
       // Check if the response contains a valid joke
-      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+      if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
         const joke = data.candidates[0].content.parts[0].text.trim();
+        setIsAIJoke(true);
         return joke;
       }
       
       // Fallback to random joke if API response is unexpected
+      setIsAIJoke(false);
       return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
     } catch (error) {
       // Silent fallback to random joke
+      console.log("Error generating joke:", error);
+      setIsAIJoke(false);
       return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
     } finally {
       setIsLoading(false);
@@ -87,12 +97,13 @@ const AIJokeWriter = () => {
   }, []);
 
   return (
-    <div className="w-full bg-gradient-to-r from-comedy-700/10 to-comedy-500/10 py-3 relative overflow-hidden">
+    <div className="w-full bg-gradient-to-r from-comedy-700/10 to-comedy-500/10 py-2 relative overflow-hidden">
       <div className={`container mx-auto px-4 flex items-center justify-center transition-opacity duration-500 ${isNew ? 'animate-bounce-subtle' : ''}`}>
         <Laugh className="h-5 w-5 text-comedy-500 mr-2 flex-shrink-0" />
         <p className="text-sm md:text-base font-medium text-center">
           <span className="font-bold mr-2">AI Comedy Writer:</span>
           {isLoading ? "Generating joke..." : currentJoke}
+          {isAIJoke && <span className="ml-2 text-xs text-comedy-500">✨ AI generated</span>}
         </p>
       </div>
     </div>
