@@ -6,6 +6,7 @@ import SketchCard from "@/components/SketchCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import AIAssistant from "@/components/AIAssistant";
 import Footer from "@/components/Footer";
+import AIJokeWriter from "@/components/AIJokeWriter";
 import { Badge } from "@/components/ui/badge";
 
 // Mock data for sketches
@@ -125,6 +126,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
+      <AIJokeWriter />
       
       <main className="flex-1">
         <div className="relative py-10 md:py-16 mb-8 overflow-hidden">

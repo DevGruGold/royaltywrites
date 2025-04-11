@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { PenSquare, TrendingUp, Star } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import AIJokeWriter from "@/components/AIJokeWriter";
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
+      <AIJokeWriter />
       
       <main className="flex-1">
         <div className="relative overflow-hidden">
