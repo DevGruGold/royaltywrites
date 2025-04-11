@@ -12,42 +12,38 @@ const fallbackJokes = [
   "Why did the scarecrow win an award? Because he was outstanding in his field!",
 ];
 
+// Gemini API key
+const GEMINI_API_KEY = "AIzaSyBHR7BsHi_oFNOrJxgyNwK1JGumBcpuLOc";
+
 const AIJokeWriter = () => {
   const [currentJoke, setCurrentJoke] = useState<string>("");
   const [isNew, setIsNew] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [apiKey, setApiKey] = useState<string>("");
-  const [showApiKeyInput, setShowApiKeyInput] = useState<boolean>(false);
 
-  // Function to generate a joke using the OpenAI API
+  // Function to generate a joke using the Gemini API
   const generateJoke = async () => {
-    if (!apiKey) {
-      setShowApiKeyInput(true);
-      return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
-    }
-
     try {
       setIsLoading(true);
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages: [
-            {
-              role: "system",
-              content: "You are a professional comedy writer specializing in short, punchy one-liners and jokes. Create ONLY the joke text - no explanations, no quotation marks, no 'here's a joke' prefixes."
-            },
+          contents: [
             {
               role: "user",
-              content: "Write a single original, clean, and clever stand-up comedy one-liner or short joke. Be creative and surprising."
+              parts: [
+                {
+                  text: "Generate a single original, clean, and clever stand-up comedy one-liner or short joke. Be creative and surprising. Only return the joke text - no explanations, no quotation marks, no 'here's a joke' prefixes."
+                }
+              ]
             }
           ],
-          max_tokens: 100,
-          temperature: 0.9
+          generationConfig: {
+            temperature: 0.9,
+            maxOutputTokens: 100,
+          }
         })
       });
 
@@ -59,7 +55,7 @@ const AIJokeWriter = () => {
         return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
       }
       
-      const joke = data.choices[0].message.content.trim();
+      const joke = data.candidates[0].content.parts[0].text.trim();
       return joke;
     } catch (error) {
       console.error("Error generating joke:", error);
@@ -71,14 +67,6 @@ const AIJokeWriter = () => {
   };
 
   useEffect(() => {
-    // Try to get API key from localStorage
-    const savedApiKey = localStorage.getItem("openaiApiKey");
-    if (savedApiKey) {
-      setApiKey(savedApiKey);
-    } else {
-      setShowApiKeyInput(true);
-    }
-
     // Initial joke generation
     generateJoke().then(joke => {
       setCurrentJoke(joke);
@@ -97,50 +85,17 @@ const AIJokeWriter = () => {
 
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
-  }, [apiKey]);
-
-  const handleApiKeySave = () => {
-    localStorage.setItem("openaiApiKey", apiKey);
-    setShowApiKeyInput(false);
-    toast.success("API key saved!");
-    
-    // Generate a new joke immediately
-    generateJoke().then(joke => {
-      setCurrentJoke(joke);
-    });
-  };
+  }, []);
 
   return (
     <div className="w-full bg-gradient-to-r from-comedy-700/10 to-comedy-500/10 py-3 relative overflow-hidden">
-      {showApiKeyInput ? (
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-2">
-          <label htmlFor="apiKey" className="text-sm font-medium">
-            Enter your OpenAI API key to generate original jokes:
-          </label>
-          <input
-            id="apiKey"
-            type="password"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            className="px-3 py-1 border rounded text-sm"
-            placeholder="OpenAI API key"
-          />
-          <button
-            onClick={handleApiKeySave}
-            className="bg-comedy-500 text-white px-3 py-1 rounded text-sm hover:bg-comedy-600"
-          >
-            Save
-          </button>
-        </div>
-      ) : (
-        <div className={`container mx-auto px-4 flex items-center justify-center transition-opacity duration-500 ${isNew ? 'animate-bounce-subtle' : ''}`}>
-          <Laugh className="h-5 w-5 text-comedy-500 mr-2 flex-shrink-0" />
-          <p className="text-sm md:text-base font-medium text-center">
-            <span className="font-bold mr-2">AI Comedy Writer:</span>
-            {isLoading ? "Generating joke..." : currentJoke}
-          </p>
-        </div>
-      )}
+      <div className={`container mx-auto px-4 flex items-center justify-center transition-opacity duration-500 ${isNew ? 'animate-bounce-subtle' : ''}`}>
+        <Laugh className="h-5 w-5 text-comedy-500 mr-2 flex-shrink-0" />
+        <p className="text-sm md:text-base font-medium text-center">
+          <span className="font-bold mr-2">AI Comedy Writer:</span>
+          {isLoading ? "Generating joke..." : currentJoke}
+        </p>
+      </div>
     </div>
   );
 };
