@@ -16,47 +16,68 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { FileUp, Info, AlertTriangle, CheckCircle2, Trophy, Star, TrendingUp } from "lucide-react";
+import { FileUp, Info, CheckCircle2, Trophy, Star, TrendingUp, Wand } from "lucide-react";
 import { Link } from "react-router-dom";
 import AIJokeWriter from "@/components/AIJokeWriter";
+
+const GEMINI_API_KEY = "AIzaSyBHR7BsHi_oFNOrJxgyNwK1JGumBcpuLOc";
 
 const SubmitIdea = () => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [scriptContent, setScriptContent] = useState("");
-  const [checkStep, setCheckStep] = useState(0);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isFormatting, setIsFormatting] = useState(false);
 
-  // Gamified validation process
-  const checkScriptValidity = (content: string) => {
-    // Check for specific character names and descriptions
-    const hasSpecificCharacters = /[A-Z]{2,}\s*\(.*\)/.test(content);
-    
-    // Check for proper scene headings (INT./EXT., location, time)
-    const hasSceneHeadings = /(INT\.|EXT\.).*-.*\b(DAY|NIGHT|MORNING|EVENING|AFTERNOON|DUSK|DAWN)\b/.test(content);
-    
-    // Check for dialogue format (CHARACTER NAME followed by dialogue)
-    const hasProperDialogue = /[A-Z]{2,}\s*\n((?!\n).)+/.test(content);
+  // AI Format Function
+  const handleFormatWithAI = async () => {
+    if (!scriptContent.trim()) {
+      toast("Enter your rough skit idea first!", { description: "The AI can help format what you write." });
+      return;
+    }
+    setIsFormatting(true);
+    try {
+      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [
+                {
+                  text: `Rewrite the following as a properly formatted, creative, and clean short comedy skit, using screenplay format with scene headings, character names, and clear dialogue. Output only the script:
 
-    return {
-      characters: hasSpecificCharacters,
-      scenes: hasSceneHeadings,
-      dialogue: hasProperDialogue
-    };
-  };
+${scriptContent}`
+                }
+              ]
+            }
+          ],
+          generationConfig: {
+            temperature: 0.8,
+            maxOutputTokens: 400,
+          }
+        })
+      });
+      const data = await response.json();
 
-  const handleContentChange = (text: string) => {
-    setScriptContent(text);
-    
-    // Update the checking animation step
-    const { characters, scenes, dialogue } = checkScriptValidity(text);
-    let steps = 0;
-    if (characters) steps++;
-    if (scenes) steps++;
-    if (dialogue) steps++;
-    setCheckStep(steps);
+      let aiScript = "";
+      if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
+        aiScript = data.candidates[0].content.parts[0].text.trim();
+      }
+
+      if (aiScript) {
+        setScriptContent(aiScript);
+        toast("AI formatting complete!", { description: "The skit was rewritten in professional format." });
+      } else {
+        toast("AI formatting failed", { description: "Try again or write manually." });
+      }
+    } catch (err) {
+      toast("Format Error", { description: "Could not connect to AI. Try again later." });
+    } finally {
+      setIsFormatting(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -69,18 +90,9 @@ const SubmitIdea = () => {
       return;
     }
 
-    const { characters, scenes, dialogue } = checkScriptValidity(scriptContent);
-    if (!characters || !scenes || !dialogue) {
-      toast("Script Format Issue", {
-        description: "Your script doesn't meet all format requirements. See the guidelines section.",
-      });
-      return;
-    }
-
     // Show success animation
     setShowSuccess(true);
-    
-    // In a real app, this would send data to a server
+
     toast("🎉 Sketch Submitted Successfully!", {
       description: "Your sketch idea has been received and is being reviewed.",
     });
@@ -90,7 +102,6 @@ const SubmitIdea = () => {
       setTitle("");
       setCategory("");
       setScriptContent("");
-      setCheckStep(0);
       setShowSuccess(false);
     }, 3000);
   };
@@ -99,14 +110,14 @@ const SubmitIdea = () => {
     <div className="min-h-screen flex flex-col">
       <NavBar />
       <AIJokeWriter />
-      
+
       <main className="flex-1">
         <Header 
           title="Submit Your Sketch"
-          description="Share your comedy sketch idea and earn royalties if it gets produced."
+          description="Share your comedy sketch idea! You can write it rough or let our AI format it for you."
           showCTA={false}
         />
-        
+
         <div className="container mx-auto px-4 mb-16">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
@@ -116,13 +127,8 @@ const SubmitIdea = () => {
                     <div>
                       <CardTitle>Submit a New Sketch</CardTitle>
                       <CardDescription>
-                        Follow our professional formatting to qualify for royalties.
+                        Write your idea below &mdash; use any style. Tap <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-comedy-100 text-comedy-700 text-xs"><Wand className="h-4 w-4 inline" />Format with AI</span> for a pro upgrade!
                       </CardDescription>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <div className={`w-3 h-3 rounded-full ${checkStep >= 1 ? 'bg-green-500' : 'bg-gray-200'} transition-colors duration-300`}></div>
-                      <div className={`w-3 h-3 rounded-full ${checkStep >= 2 ? 'bg-green-500' : 'bg-gray-200'} transition-colors duration-300`}></div>
-                      <div className={`w-3 h-3 rounded-full ${checkStep >= 3 ? 'bg-green-500' : 'bg-gray-200'} transition-colors duration-300`}></div>
                     </div>
                   </div>
                 </CardHeader>
@@ -141,7 +147,7 @@ const SubmitIdea = () => {
                           required
                         />
                       </div>
-                      
+
                       <div className="space-y-2">
                         <label htmlFor="category" className="text-sm font-medium">
                           Category
@@ -165,56 +171,35 @@ const SubmitIdea = () => {
                         </Select>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <label htmlFor="script" className="text-sm font-medium">
-                        Full Script
+                        Your Skit (Rough Draft or Full Script)
                       </label>
                       <Textarea
                         id="script"
-                        placeholder="Write your sketch script here in proper format..."
-                        rows={12}
+                        placeholder="Write your sketch idea here (rough or formatted)..."
+                        rows={10}
                         value={scriptContent}
-                        onChange={(e) => handleContentChange(e.target.value)}
+                        onChange={(e) => setScriptContent(e.target.value)}
                         required
                         className="font-mono"
                       />
-                    </div>
-
-                    <div className="bg-muted rounded-md p-3">
-                      <div className="flex justify-between items-center mb-2">
-                        <h3 className="font-medium flex items-center gap-2">
-                          <Info className="h-4 w-4 text-primary" />
-                          Format Validation
-                        </h3>
-                        <span className="text-xs text-muted-foreground">{checkStep}/3 requirements met</span>
-                      </div>
-                      <ul className="space-y-2 text-sm">
-                        <li className="flex items-start gap-2">
-                          <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${checkScriptValidity(scriptContent).characters ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'}`}>
-                            {checkScriptValidity(scriptContent).characters ? '✓' : '!'}
-                          </div>
-                          <span>Character names with descriptions</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${checkScriptValidity(scriptContent).scenes ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'}`}>
-                            {checkScriptValidity(scriptContent).scenes ? '✓' : '!'}
-                          </div>
-                          <span>Scene headings (INT./EXT., location, time)</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${checkScriptValidity(scriptContent).dialogue ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'}`}>
-                            {checkScriptValidity(scriptContent).dialogue ? '✓' : '!'}
-                          </div>
-                          <span>Proper dialogue format</span>
-                        </li>
-                      </ul>
+                      <Button
+                        type="button"
+                        className="mt-2 comedy-gradient w-full md:w-auto"
+                        onClick={handleFormatWithAI}
+                        disabled={isFormatting}
+                      >
+                        <Wand className="mr-2 h-4 w-4" />
+                        {isFormatting ? "Formatting..." : "Format with AI"}
+                      </Button>
                     </div>
 
                     <div className="pt-2">
                       <Button 
                         type="submit" 
-                        className={`w-full ${checkStep === 3 ? 'comedy-gradient' : ''} transition-all duration-300`}
+                        className={`w-full comedy-gradient transition-all duration-300`}
                         disabled={showSuccess}
                       >
                         {showSuccess ? 'Submitted Successfully!' : 'Submit Sketch'}
@@ -225,55 +210,24 @@ const SubmitIdea = () => {
                 </CardContent>
               </Card>
             </div>
-            
+
             <div className="lg:col-span-1 space-y-4">
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Star className="h-5 w-5 text-comedy-500" />
-                    Format Guide
+                    How to Have the Most Fun
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Tabs defaultValue="characters">
-                    <TabsList className="w-full mb-3">
-                      <TabsTrigger value="characters">Characters</TabsTrigger>
-                      <TabsTrigger value="scenes">Scenes</TabsTrigger>
-                      <TabsTrigger value="dialogue">Dialogue</TabsTrigger>
-                    </TabsList>
-                    
-                    <TabsContent value="characters" className="mt-0">
-                      <div className="bg-muted p-2 rounded mt-1 font-mono text-xs">
-                        JENNIFER ADAMS (32, conspiracy-minded dog groomer)
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        All characters must have specific names and descriptions, not generic labels.
-                      </p>
-                    </TabsContent>
-                    
-                    <TabsContent value="scenes" className="mt-0">
-                      <div className="bg-muted p-2 rounded mt-1 font-mono text-xs">
-                        INT. COFFEE SHOP - MORNING
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Proper screenplay format with location and time of day.
-                      </p>
-                    </TabsContent>
-                    
-                    <TabsContent value="dialogue" className="mt-0">
-                      <div className="bg-muted p-2 rounded mt-1 font-mono text-xs">
-                        JENNIFER<br />
-                        (whispering)<br />
-                        The dogs told me the truth about the mail carriers.
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Character name in all caps followed by their lines.
-                      </p>
-                    </TabsContent>
-                  </Tabs>
+                  <ul className="list-inside list-disc text-sm pl-5 space-y-2">
+                    <li>Describe a silly, original scenario or character.</li>
+                    <li>If stuck, write something rough and hit <span className="inline-flex items-center gap-1 px-1 rounded bg-comedy-100 text-comedy-700 text-xs"><Wand className="h-3 w-3" />Format with AI</span>.</li>
+                    <li>No strict formatting required&mdash;we'll polish it for you if needed!</li>
+                  </ul>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="pb-3 bg-amber-50 dark:bg-amber-950/20">
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -283,9 +237,9 @@ const SubmitIdea = () => {
                 </CardHeader>
                 <CardContent className="pt-3">
                   <p className="text-sm">
-                    Sketches that follow our formatting standards qualify for royalty payments if produced.
+                    Sketches that get produced qualify for royalty payments.
                   </p>
-                  
+
                   <div className="mt-4 flex flex-col gap-3">
                     <div className="flex items-center gap-2">
                       <TrendingUp className="h-4 w-4 text-green-500" />
@@ -296,11 +250,11 @@ const SubmitIdea = () => {
                     <div className="flex items-center gap-2">
                       <Star className="h-4 w-4 text-amber-500" />
                       <div className="text-xs">
-                        <span className="font-medium">Pro formatting:</span> 10% higher royalties
+                        <span className="font-medium">Staff picks:</span> 10% higher royalties
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="mt-4">
                     <Button variant="outline" size="sm" asChild className="w-full">
                       <Link to="/copyright-standards">
@@ -315,10 +269,11 @@ const SubmitIdea = () => {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
 };
 
 export default SubmitIdea;
+
