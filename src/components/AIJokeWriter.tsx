@@ -12,7 +12,6 @@ const fallbackJokes = [
   "Why did the scarecrow win an award? Because he was outstanding in his field!",
 ];
 
-// Gemini API key
 const GEMINI_API_KEY = "AIzaSyBHR7BsHi_oFNOrJxgyNwK1JGumBcpuLOc";
 
 const AIJokeWriter = () => {
@@ -49,8 +48,10 @@ const AIJokeWriter = () => {
       });
 
       if (!response.ok) {
-        console.log("API error status:", response.status);
-        return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+        console.error("API error status:", response.status);
+        const fallbackJoke = fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+        setIsAIJoke(false);
+        return fallbackJoke;
       }
 
       const data = await response.json();
@@ -63,13 +64,14 @@ const AIJokeWriter = () => {
       }
       
       // Fallback to random joke if API response is unexpected
+      const fallbackJoke = fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
       setIsAIJoke(false);
-      return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+      return fallbackJoke;
     } catch (error) {
-      // Silent fallback to random joke
-      console.log("Error generating joke:", error);
+      console.error("Error generating joke:", error);
+      const fallbackJoke = fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
       setIsAIJoke(false);
-      return fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+      return fallbackJoke;
     } finally {
       setIsLoading(false);
     }

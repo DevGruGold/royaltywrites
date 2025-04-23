@@ -60,6 +60,7 @@ ${scriptContent}`
           }
         })
       });
+      
       const data = await response.json();
 
       let aiScript = "";
@@ -276,4 +277,3 @@ ${scriptContent}`
 };
 
 export default SubmitIdea;
-
